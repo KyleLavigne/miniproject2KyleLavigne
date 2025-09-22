@@ -5,9 +5,11 @@
  
 # Project Title
  
-Miniproject 2 
+Miniproject 2 Spotify Key Data Analyzer
  
 ## Description
+
+This project takes data from a .csv and visualizes it to answer the following questions:
 
 Question 1: How many songs are in each key?
 
@@ -25,6 +27,8 @@ Please install the pip requirements:
 ```aiignore
 pip install -r requirements.txt
 ```
+
+All data needed is in the data folder, due to a formatting issue
  
 ### Executing program
 
@@ -43,9 +47,11 @@ Kyle Lavigne
  
 ## Acknowledgments
  
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+* [Matplotlib Documentation](https://matplotlib.org/stable/)
+* [Pandas Documentation](https://pandas.pydata.org/docs/index.html)
+* [Spotify Song Data](https://www.kaggle.com/datasets/ahmadrazakashif/spotify-popularity-songs)
+
+## Note
+
+I included the dataset in the commit due to a formatting 
+error that had to be fixed manually
