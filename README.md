@@ -9,7 +9,8 @@ Miniproject 2
  
 ## Description
  
-An in-depth paragraph about your project and overview of use.
+Question: What keys were the most popular in each month of the year?
+
  
 ## Getting Started
  

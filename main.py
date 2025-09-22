@@ -3,8 +3,37 @@
 ### Mini Project 2
 
 import pandas as pd
+import matplotlib.pyplot as plt
 
-pd = pd.DataFrame()
+path = "./data/Popular_Spotify_Songs.csv"
+
+songs = pd.read_csv(path, encoding="latin1")
+
+popular_key = songs[['key', 'streams']].groupby('key').mean()
+
+key = songs[['key']].value_counts()
+
+a = key["A"]
+a1 = key["A#"]
+b = key["B"]
+d = key["C#"]
+e = key["D"]
+c1 = key["C#"]
+d = key["D"]
+d1 = key["D#"]
+e = key["E"]
+f = key["F"]
+f1 = key["F#"]
+g = key["G"]
+g1 = key["G#"]
+
+keys = ['A', 'A#', 'B', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#' ]
+values = [a, a1, b, c1, d, d1, e, f, f1, g, g1]
+plt.bar(keys, values, edgecolor='black', color=['g','m'])
+plt.title('Number of Songs in Each Key')
+plt.xlabel('Key')
+plt.ylabel('Number of Songs')
+plt.show()
 
 
 # (5/5 points) Initial comments with your name, class and project at the top of your .py file. Done
