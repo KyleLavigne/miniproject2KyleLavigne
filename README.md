@@ -13,7 +13,7 @@ Question 1: How many songs are in each key?
 
 Question 2: What was the most popular key by streams?
 
-Question 3: What keys were the most popular in each month of the year?
+Question 3: What keys were the most popular in each month of the year, by average streams?
 
  
 ## Getting Started

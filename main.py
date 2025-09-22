@@ -1,20 +1,26 @@
 ### INF601 - Advanced Programming in Python
 ### Kyle Lavigne
 ### Mini Project 2
+from tokenize import group
 
-
-#Imports
+# Imports
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
+from pathlib import Path
 
+# Initial Setup
+charts = Path('charts')
+if not charts.exists():
+    Path(r'charts').mkdir()
 
-#Initial Setup
 path = "./data/Popular_Spotify_Songs.csv"
 
 songs = pd.read_csv(path, encoding="latin1")
 
 ################################################################################
-#Question 1: How many songs are in each key?
+# Question 1: How many songs are in each key?
 
 key = songs[['key']].value_counts()
 
@@ -39,30 +45,72 @@ plt.bar(keys, values, edgecolor='black', color=['g','m'])
 plt.title('Number of Songs in Each Key')
 plt.xlabel('Key')
 plt.ylabel('Number of Songs')
-plt.show()
+plt.savefig("charts/key_amount.png", dpi=300)
+print('Saving key_amount.png')
 
 ################################################################################
-#Question 2: What was the most popular key by streams?
+# Question 2: What was the most popular key by streams?
 
 popular_key = songs[['key', 'streams']].groupby('key').mean()
 
 col = "streams" if "streams" in popular_key.columns else popular_key.select_dtypes("number").columns[0]
 
-x = popular_key.index.astype(str)        # bar labels
-h = popular_key[col].to_numpy()          # bar heights
+x = popular_key.index.astype(str)
+h = popular_key[col].to_numpy()
 
-plt.bar(x, h, edgecolor='black', color=['g','m'])  # list will cycle if shorter than bars
+plt.bar(x, h, edgecolor='black', color=['g','m'])
 plt.title('Average Streams by Key')
 plt.xlabel('Key')
 plt.ylabel('Average Streams')
 plt.xticks(rotation=0)
 plt.tight_layout()
-plt.show()
+plt.savefig("charts/avg_key_streams.png", dpi=300)
+print('Saving avg_key_streams.png')
 
 ################################################################################
 #Question 3: What keys were the most popular in each month of the year?
 
+df = songs.dropna(subset=["released_month", "key"]).copy()
 
+# total streams per month/key
+grouped = df.groupby(["released_month", "key"])["streams"].sum().reset_index()
+
+# pick the winning key for each month
+best_key = grouped.groupby("released_month")["streams"].idxmax()
+winners = grouped.loc[best_key].sort_values("released_month")
+
+# build color map (1 color per key)
+unique_keys = winners["key"].unique()
+palette = plt.cm.tab20(np.linspace(0, 1, len(unique_keys)))   # any colormap you like
+color_map = dict(zip(unique_keys, palette))
+
+# plot
+months = winners["released_month"].astype(int)
+totals = winners["streams"].to_numpy()
+keys = winners["key"]
+
+fig, ax = plt.subplots(figsize=(10,5))
+ax.bar(months, totals,
+       color=[color_map[k] for k in keys],
+       edgecolor="black")
+
+ax.set_title("Most Popular Key by Month (total streams)")
+ax.set_xlabel("Release Month")
+ax.set_ylabel("Total Streams")
+ax.set_xticks(months)
+ax.yaxis.set_major_formatter(FuncFormatter(lambda v, pos: f"{int(v):,}"))
+
+# annotate each bar with its key
+for m, t, k in zip(months, totals, keys):
+    ax.text(m, t, k, ha="center", va="bottom", fontsize=9)
+
+plt.tight_layout()
+plt.savefig("charts/popular_key.png", dpi=300)
+print('Saving popular_key.png')
+
+################################################################################
+
+print('All Done')
 # (5/5 points) Initial comments with your name, class and project at the top of your .py file. Done
 # (5/5 points) Proper import of packages used.
 # (20/20 points) Using a data source of your choice, such as data from data.gov or using the Faker package, generate or retrieve some data for creating basic statistics on. This will generally come in as json data, etc.
